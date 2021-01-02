@@ -4,8 +4,8 @@ class Subject extends Component{
     render(){
       return(
         <header>
-          <h1>{this.props.title}</h1>
-          Let's walk to vegan place!
+          <h1><a href="/">{this.props.title}</a></h1>
+          {this.state.subject.sub}
         </header>
       );
     }
