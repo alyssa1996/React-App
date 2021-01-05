@@ -1,9 +1,11 @@
 import './App.css';
 import TOC from './components/TOC';
 import Subject from './components/Subject';
-import Content from './components/Content';
+import ReadContent from './components/ReadContent';
 import Info from './components/Info';
 import { Component } from 'react';
+import Control from './components/Control';
+import CreateContent from './components/CreateContent';
 
 class App extends Component {
   //state값을 초기화 시키는 과정 : constructor, 즉 생성자를 만드는 과정
@@ -11,8 +13,9 @@ class App extends Component {
   constructor(props){
     super(props);
     //state값을 초기화 시키기 위한 코드
+    this.max_content_id=4;
     this.state={
-      mode:'read',
+      mode:'create',
       selected_content_id:2,
       subject: { title: 'Vegan for Everyone', sub:"Good Vegan Places, not only for vegan but also for everyone" },
       welcome:{title: 'Welcome', desc:'Hello React'},
@@ -27,10 +30,11 @@ class App extends Component {
 
   render(){
     console.log('App render')
-    var _title,_desc=null;
+    var _title,_desc,_article=null;
     if(this.state.mode === "welcome"){
       _title=this.state.welcome.title;
       _desc=this.state.welcome.desc;
+      _article=<ReadContent title={_title} desc={_desc}></ReadContent>
     }else if(this.state.mode === "read"){
       var i=0;
       while(i<this.state.contents.length){
@@ -42,6 +46,30 @@ class App extends Component {
         }
         i=i+1;
       }
+      _article=<ReadContent title={_title} desc={_desc}></ReadContent>
+    }else if(this.state.mode==="create"){
+      _article=<CreateContent onSubmit={function(_title,_desc){
+        console.log(_title,_desc)
+        this.max_content_id=this.max_content_id+1;
+        // this.state.contents.push(
+        //   {
+        //     id: this.max_content_id,
+        //     title: _title,
+        //     desc: _desc
+        //   });
+        var _contents=this.state.contents.concat(
+          {
+            id: this.max_content_id,
+            title: _title,
+            desc: _desc
+          }
+        )
+
+        this.setState({
+          //contents: this.state.contents ==> 기존에 있었던 contents의 배열에 값을 추가하는 형태로 성능 개선시 굉장히 까다로워짐
+          contents: _contents // 기존에 가지고 있던 contents의 배열이 새롭게 만들어진 데이터로 교체되어버리는 형태
+        });
+      }.bind(this)}></CreateContent>
     }
   return (
     <div className="App">
@@ -52,6 +80,7 @@ class App extends Component {
           mode:'welcome'
         })
       }.bind(this)}></Subject>
+
       <TOC data={this.state.contents}
       onChangePage={function(id){
         this.setState({
@@ -59,7 +88,15 @@ class App extends Component {
           selected_content_id:Number(id)
         })
       }.bind(this)}></TOC>
-      <Content title={_title} desc={_desc}></Content>
+
+      <Control onChangeMode={function(mode){
+        this.setState({
+          mode:mode
+        })
+      }.bind(this)}></Control>
+
+      {_article}
+      
       <Info></Info>
     </div>
   );
