@@ -1,0 +1,38 @@
+
+.Menu{
+    display:flex;
+    flex-direction: row;
+    position: sticky;
+    top:0;
+    background-color:white;
+    padding:8px;
+}
+
+.Header{
+    font-size:large;
+    font-weight: bold;
+    color: tomato;
+}
+
+.Navigator{
+   display:flex;
+   flex-direction: row;
+   position:absolute;
+   right:0;
+}
+
+.Content{
+    list-style-type: none;
+    margin-right: 16px;
+}
+
+a:link{
+    text-decoration: none;
+}
+.Menu a:visited{
+   color:black;
+}
+
+.Menu a:hover{
+    color:tomato;
+ }

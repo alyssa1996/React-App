@@ -6,6 +6,7 @@ import Info from './components/Info';
 import { Component } from 'react';
 import Control from './components/Control';
 import CreateContent from './components/CreateContent';
+import Menu from './components/Menu';
 
 class App extends Component {
   //state값을 초기화 시키는 과정 : constructor, 즉 생성자를 만드는 과정
@@ -73,6 +74,8 @@ class App extends Component {
     }
   return (
     <div className="App">
+      <Menu></Menu>
+
       <Subject title={this.state.subject.title}
       sub={this.state.subject.sub}
       onChangePage={function(){
@@ -96,6 +99,10 @@ class App extends Component {
       }.bind(this)}></Control>
 
       {_article}
+
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi et justo odio. Nulla euismod augue in risus congue, at semper erat molestie. Sed tempus augue eget arcu lobortis, quis dictum sapien gravida. Aenean nunc diam, rhoncus vitae sem sit amet, posuere mollis augue. Nullam efficitur semper magna, in feugiat augue mollis quis. Curabitur ac sagittis massa. Etiam vulputate ex vel tincidunt molestie. Morbi nec erat nisl. Aliquam commodo sem convallis luctus gravida.
+
+Aliquam hendrerit nisl ligula, a dapibus nisi faucibus in. Vivamus purus mi, porta eu condimentum at, blandit at lacus. Nunc vel purus nec quam aliquet laoreet sed ac massa. Donec tempor turpis quis est ultricies pellentesque. Curabitur et convallis mi. Pellentesque eget auctor dui, a pharetra risus. Praesent et egestas eros. Sed sit amet neque felis. Nam pretium, erat in rutrum elementum, dolor augue vulputate tellus, a volutpat quam justo non odio. Duis dictum velit at sapien mollis viverra.</p>
       
       <Info></Info>
     </div>
