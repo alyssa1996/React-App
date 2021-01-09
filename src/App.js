@@ -6,6 +6,7 @@ import Info from './components/Info';
 import { Component } from 'react';
 import Control from './components/Control';
 import CreateContent from './components/CreateContent';
+import UpdateContent from './components/UpdateContent';
 import Menu from './components/Menu';
 
 class App extends Component {
@@ -29,25 +30,26 @@ class App extends Component {
     }
   }
 
-  render(){
-    console.log('App render')
+  getReadContent(){
+    var i=0;
+      while(i<this.state.contents.length){
+        var data=this.state.contents[i];
+        if(data.id===this.state.selected_content_id){
+          return data;
+        }
+        i=i+1;
+      }
+  }
+
+  getContent(){
     var _title,_desc,_article=null;
     if(this.state.mode === "welcome"){
       _title=this.state.welcome.title;
       _desc=this.state.welcome.desc;
       _article=<ReadContent title={_title} desc={_desc}></ReadContent>
     }else if(this.state.mode === "read"){
-      var i=0;
-      while(i<this.state.contents.length){
-        var data=this.state.contents[i];
-        if(data.id===this.state.selected_content_id){
-          _title=data.title;
-          _desc=data.desc;
-          break;
-        }
-        i=i+1;
-      }
-      _article=<ReadContent title={_title} desc={_desc}></ReadContent>
+      var _content=this.getReadContent();
+      _article=<ReadContent title={_content.title} desc={_content.desc}></ReadContent>
     }else if(this.state.mode==="create"){
       _article=<CreateContent onSubmit={function(_title,_desc){
         console.log(_title,_desc)
@@ -68,10 +70,38 @@ class App extends Component {
 
         this.setState({
           //contents: this.state.contents ==> 기존에 있었던 contents의 배열에 값을 추가하는 형태로 성능 개선시 굉장히 까다로워짐
-          contents: _contents // 기존에 가지고 있던 contents의 배열이 새롭게 만들어진 데이터로 교체되어버리는 형태
+          contents: _contents, // 기존에 가지고 있던 contents의 배열이 새롭게 만들어진 데이터로 교체되어버리는 형태
+          mode:'read',
+          selected_content_id:this.max_content_id
         });
       }.bind(this)}></CreateContent>
+    }else if(this.state.mode==="update"){
+      _content=this.getReadContent();
+      _article=<UpdateContent data={_content} onSubmit={
+        function(id,_title,_desc){
+         var _contents = Array.from(this.state.contents);
+         var i=0;
+         while(i<_contents.length){
+           if(_contents[i].id===id){
+             _contents[i]={id:id,title:_title,desc:_desc};
+             break;
+           }
+           i=i+1;
+         }
+        
+         this.setState({
+          contents: _contents,
+          mode:'read'
+        });
+      }.bind(this)}></UpdateContent>
     }
+
+    return _article;
+  }
+
+  render(){
+    console.log('App render')
+    
   return (
     <div className="App">
       <Menu></Menu>
@@ -103,7 +133,7 @@ class App extends Component {
         })
       }.bind(this)}></Control>
 
-      {_article}
+      {this.getContent()}
 
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi et justo odio. Nulla euismod augue in risus congue, at semper erat molestie. Sed tempus augue eget arcu lobortis, quis dictum sapien gravida. Aenean nunc diam, rhoncus vitae sem sit amet, posuere mollis augue. Nullam efficitur semper magna, in feugiat augue mollis quis. Curabitur ac sagittis massa. Etiam vulputate ex vel tincidunt molestie. Morbi nec erat nisl. Aliquam commodo sem convallis luctus gravida.
 
