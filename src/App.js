@@ -17,7 +17,7 @@ class App extends Component {
     //state값을 초기화 시키기 위한 코드
     this.max_content_id=4;
     this.state={
-      mode:'create',
+      mode:'welcome',
       selected_content_id:2,
       subject: { title: 'Vegan for Everyone', sub:"Good Vegan Places, not only for vegan but also for everyone" },
       welcome:{title: 'Welcome', desc:'Hello React'},
@@ -127,10 +127,26 @@ class App extends Component {
         })
       }.bind(this)}></TOC>
 
-      <Control onChangeMode={function(mode){
-        this.setState({
-          mode:mode
-        })
+      <Control onChangeMode={function(_mode){
+        if(_mode==="delete"){
+          if(window.confirm('Do you really want to delete it?')){
+            var _contents=Array.from(this.state.contents);
+            var i=0;
+            while(i<_contents.length){
+              if(_contents[i].id===this.state.selected_content_id){
+                _contents.splice(i,1);
+                break
+              }
+              i=i+1;
+            }
+            this.setState({mode:'welcome',contents:_contents})
+            alert('deleted!');
+          }
+        }else{
+          this.setState({
+            mode:_mode
+          });
+        }    
       }.bind(this)}></Control>
 
       {this.getContent()}
