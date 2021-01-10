@@ -2,21 +2,33 @@ import { Component } from 'react';
 import './Menu.css'
 
 class Menu extends Component{
+
     render(){
-        function Nav(e, menu){
-            e.preventDefault();
-            alert('HELLO, Here is Menu: '+menu);
-        }
+      var lists=[];
+      var data=this.props.data;
+      var i=0;
+      while(i<data.length){
+        lists.push(
+          <li key={data[i].id} className="Content">
+            <a href={"/content/"+data[i].id}
+            data-id={data[i].id}
+            onClick={function(e){ 
+              e.preventDefault();
+              this.props.onChangePage(e.target.dataset.id); }.bind(this)}>
+              {data[i].title}
+            </a>
+          </li>
+          )
+        i=i+1;
+      }
         return(
             <div className="Menu">
                 <header className="Header">
-                    Vegan for Everyone
+                    {lists.slice(0,1)}
                 </header>
 
                 <nav className="Navigator">
-                    <li className="Content" onClick={(e)=>Nav(e,'menu1')}><a href="/">menu1</a></li>
-                    <li className="Content" onClick={(e)=>Nav(e,'menu2')}><a href="/">menu2</a></li>
-                    <li className="Content" onClick={(e)=>Nav(e,'menu3')}><a href="/">menu3</a></li>
+                    {lists.slice(1)}
                 </nav>
             </div>
         )

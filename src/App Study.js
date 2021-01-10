@@ -19,7 +19,6 @@ class App extends Component {
       selected_content_id:2,
       welcome:{title: 'Welcome', desc:'Hello React'},
       contents: [
-        {id:0,title: 'Vegan For Everyone', desc:'Hello React'},
         { id:1, title:'구경하기', desc:'맛있는 비건 음식점을 찾아서'},
         { id:2, title:'배워보기', desc:'품질 좋은 비건 식료품을 찾아서'},
         { id:3, title:'알리기',desc:'그 외 비건 제품들을 찾아서'},
@@ -103,12 +102,33 @@ class App extends Component {
         })
       }.bind(this)}></Menu>
 
-      {this.state.selected_content_id===0?
-      <Banner></Banner>:
-      <div></div>
-      }
+      <Banner></Banner>
+
+      <Control onChangeMode={function(_mode){
+        if(_mode==="delete"){
+          if(window.confirm('Do you really want to delete it?')){
+            var _contents=Array.from(this.state.contents);
+            var i=0;
+            while(i<_contents.length){
+              if(_contents[i].id===this.state.selected_content_id){
+                _contents.splice(i,1);
+                break
+              }
+              i=i+1;
+            }
+            this.setState({mode:'welcome',contents:_contents})
+            alert('deleted!');
+          }
+        }else{
+          this.setState({
+            mode:_mode
+          });
+        }    
+      }.bind(this)}></Control>
 
       {this.getContent()}
+
+      <Info></Info>
     </div>
   );
   }
