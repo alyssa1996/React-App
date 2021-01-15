@@ -9,6 +9,7 @@ import CreateContent from './components/CreateContent';
 import UpdateContent from './components/UpdateContent';
 import Banner from './components/Banner';
 import Menu from './components/Menu';
+import {Button} from 'react-bootstrap';
 
 class App extends Component {
   constructor(props){
@@ -95,13 +96,14 @@ class App extends Component {
     
   return (
     <div className="App">
-      <Menu data={this.state.contents}
+      <Button variant="outline-success">Search</Button>
+      {/* <Menu data={this.state.contents}
       onChangePage={function(id){
         this.setState({
           mode:'read',
           selected_content_id:Number(id)
         })
-      }.bind(this)}></Menu>
+      }.bind(this)}></Menu> */}
 
       {this.state.selected_content_id===0?
       <Banner></Banner>:
